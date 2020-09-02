@@ -12,7 +12,17 @@ const MovieOption = (props) => {
         <h3>{title}</h3>
       </li>
       <li>
-        <img src={poster} alt={`Poster for: ${title}`} />
+        {
+          // if ther is no pic than put default no image available
+          poster === "N/A" ? (
+            <img
+              src={require("../assets/noImageAvailable.jpg")}
+              alt={`Poster for: ${title}`}
+            />
+          ) : (
+            <img src={poster} alt={`Poster for: ${title}`} />
+          )
+        }
       </li>
       <li>
         <button>Nominate</button>
