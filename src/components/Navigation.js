@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from "react";
 
-const Navigation = () => {
+const Navigation = (props) => {
+  const { handleSearch, closeSearch } = props;
   // checks for when user clicks to search
   const [userSearching, setUserSearching] = useState(false);
   const [query, setQuery] = useState("");
-//   toggle the default title or search style navigation
+  //   toggle the default title or search style navigation
   const toggleSearch = () => {
-      setUserSearching(!userSearching);
+    setUserSearching(!userSearching);
   };
 
   const handleInput = (e) => {
     setQuery(e.target.value);
-  }
+  };
 
-  const handleSearch = (e) => {
-      e.preventDefault();
-      console.log(query);
-  }
+  const handleCloseSearch = () => {
+    toggleSearch();
+    closeSearch();
+  };
+
+  const defferedSearch = (e) => {
+    handleSearch(e, query);
+  };
+
   return (
     <nav>
       <button>Menu</button>
@@ -31,7 +37,7 @@ const Navigation = () => {
       )}
       {userSearching && (
         <div>
-          <form action="" onSubmit={handleSearch}>
+          <form action="" onSubmit={defferedSearch}>
             <label htmlFor="movieSearch"></label>
             <input
               id="movieSearch"
@@ -44,13 +50,13 @@ const Navigation = () => {
               <i className="fas fa-search"></i>
             </button>
           </form>
-          <button onClick={toggleSearch}>
+          <button onClick={handleCloseSearch}>
             <i className="fas fa-times"></i>
           </button>
         </div>
       )}
     </nav>
   );
-}
+};
 
 export default Navigation;
