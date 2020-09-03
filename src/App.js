@@ -3,8 +3,12 @@ import "./App.css";
 import axios from "axios";
 import Navigation from "./components/Navigation";
 import SearchResults from "./components/SearchResults";
+import firebase from "./components/Firebase";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const App = () => {
+  const dbRef = firebase.database().ref();
   // state variables
   // search results
   const [results, setResults] = useState([]);
@@ -33,7 +37,6 @@ const App = () => {
           `Found ${response.data.Search.length} results for : ${query}`
         );
         setResults(response.data.Search);
-        console.log(response.data.Search);
       }
     });
   };
@@ -43,9 +46,19 @@ const App = () => {
     setSearchMessage("");
   };
 
+  const handleSignInAndRegister = () => {
+    Swal.fire({
+      html: `<input id='username' class="swal2-input" type='email' placeholder="your username ..."> <br/> <input class="swal2-input" id='password' type='password' placeholder="your password ...">`,
+      preConfirm: () => ({
+        currentPassword: document.getElementById("username").value,
+        newPassword1: document.getElementById("password").value,
+      }),
+    });
+  }
+
   return (
     <div className="App">
-      <Navigation handleSearch={handleSearch} closeSearch={closeSearch} />
+      <Navigation handleSearch={handleSearch} closeSearch={closeSearch} handleSignInAndRegister={handleSignInAndRegister}/>
       {isSearching && (
         <SearchResults results={results} searchMessage={searchMessage} />
       )}
