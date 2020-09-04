@@ -3,12 +3,12 @@ import "./App.css";
 import axios from "axios";
 import Navigation from "./components/Navigation";
 import SearchResults from "./components/SearchResults";
+import UserNominations from "./components/UserNominations";
 import firebase from "./components/Firebase";
 import swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const App = () => {
-  const dbRef = firebase.database().ref();
   // state variables
   // search results
   const [results, setResults] = useState([]);
@@ -17,8 +17,41 @@ const App = () => {
   const [searchMessage, setSearchMessage] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currUser, setCurrUser] = useState("");
+  const [userNominations, setUserNominations] = useState([]);
 
   // functions
+
+  // function to run when component mounts (ie gather user data and new nominations)
+  useEffect(()=> {
+  const dbRef = firebase.database().ref();
+  dbRef.on("value", (snapshot) => {
+      // const nominationsdata = snapshot.val().allNominations;
+      // const updatedNominations = [];
+      // for(let key in nominationsdata) {
+      //   updatedNominations.push(data[key]);
+      // };
+      // update loggedin users personal nominations
+      if(isLoggedIn === true){
+        const updatedUserNominations = [];
+        const users = snapshot.val().users;
+        for(let key in users) {
+          if(users[key].username === currUser){
+            console.log(users[key].username)
+            if((users[key].username.nominations)){
+              for(let i =0; i<users[key].username.nominations.length-1; i++){
+                updatedUserNominations.push(users[key].username.nominations[i]);
+              }
+            }
+            setUserNominations(updatedUserNominations);
+            break;
+          }
+        };
+      }
+    })
+  }, []);
+
+
+
   const handleSearch = (e, query) => {
     setIsSearching(true);
     e.preventDefault();
@@ -207,9 +240,8 @@ const App = () => {
         closeSearch={closeSearch}
         handleSignInAndRegister={handleSignInAndRegister}
       />
-      {isSearching && (
-        <SearchResults results={results} searchMessage={searchMessage} />
-      )}
+      {isSearching && (<SearchResults results={results} searchMessage={searchMessage} />)}
+      {isSearching === false && isLoggedIn === true && (<UserNominations userNominations={userNominations}/>)}
     </div>
   );
 };
