@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const Navigation = (props) => {
-  const { handleSearch, closeSearch } = props;
+  const { handleSearch, closeSearch, handleSignInAndRegister } = props;
   // checks for when user clicks to search
   const [userSearching, setUserSearching] = useState(false);
   const [query, setQuery] = useState("");
@@ -32,7 +32,7 @@ const Navigation = (props) => {
             <i className="fas fa-search"></i>
           </button>
           <h1>Shoppies</h1>
-          <button>Sign In/Up</button>
+          <button onClick={handleSignInAndRegister}>Sign In/Up</button>
         </div>
       )}
       {userSearching && (
