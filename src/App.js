@@ -58,14 +58,14 @@ const App = () => {
       })
       .then((result) => {
         if (result.value) {
-          experimentalPrompt("Sign In");
+          credentialsPrompt("Sign In");
         } else if (result.dismiss === swal.DismissReason.cancel) {
-          experimentalPrompt("Register");
+          credentialsPrompt("Register");
         }
       });
   };
   // function name = async (p) => {const prompt = await swal({})}
-  const experimentalPrompt = async (signMethod) => {
+  const credentialsPrompt = async (signMethod) => {
     const promptArr = [];
     let username = "";
     let password = "";
@@ -85,21 +85,44 @@ const App = () => {
           if (result.value) {
             const { user, pass } = result.value;
             username = user;
-            password = password;
+            password = pass;
             if (user === "" || pass === "") {
-              promptArr[1]();
+              promptArr[1]("You can't have empty fields!");
+            } else {
+              if (signMethod === "Register") {
+                async function validRegistration() {
+                  let checkReg = await registerUser(username, password);
+                  return checkReg;
+                }
+                validRegistration().then((validity) => {
+                  validity === true
+                    ? promptArr[2]("Registered Successfully!")
+                    : promptArr[1]("Username already exists!");
+                });
+              } else if (signMethod === "Sign In") {
+                async function validLogin() {
+                  let checkLog = await logUserIn(username, password);
+                  return checkLog;
+                }
+                validLogin().then((validity) => {
+                  validity === true
+                    ? promptArr[2]("Signed In Successfully!")
+                    : promptArr[1]("Incorrect Username/Password!");
+                });
+              }
             }
           } else if (result.dismiss === swal.DismissReason.cancel) {
           }
         });
     };
     promptArr.push(credentials);
-    const emptyFields = () => {
+
+    const credentialsError = (error) => {
       swal
         .fire({
           icon: "error",
           title: "Oops...",
-          text: "You can't have empty fields!",
+          text: error,
           showCancelButton: true,
           cancelButtonText: "Back",
         })
@@ -109,32 +132,72 @@ const App = () => {
           }
         });
     };
-    promptArr.push(emptyFields);
+    promptArr.push(credentialsError);
+
+    const credentialsSuccess = (success) => {
+      swal.fire({
+        icon: "success",
+        title: "Success",
+        text: success,
+        showCancelButton: false,
+      });
+    };
+    promptArr.push(credentialsSuccess);
     // to call a function just promptArr[desiredCall](params)
     promptArr[0]();
   };
 
-  const credentialsPrompt = (signMethod) => {
-    swal
-      .fire({
-        title: signMethod,
-        html: `<input id='username' class="swal2-input" required type='email' placeholder="your username ..."> <br/> <input class="swal2-input" required id='password' type='password' placeholder="your password ...">`,
-        showCancelButton: true,
-        confirmButtonText: signMethod,
-        preConfirm: () => ({
-          user: document.getElementById("username").value,
-          pass: document.getElementById("password").value,
-        }),
-      })
-      .then((result) => {
-        if (result.value) {
-          const { user, pass } = result.value;
-          if (user === "" || pass === "") {
+  // function to register new users with unique usernames returns true if a username is available and has now been registered successfully
+  const registerUser = async (username, password) => {
+    let usernameFree = true;
+    const dbref = await firebase
+      .database()
+      .ref()
+      .once("value", (snapshot) => {
+        // in the data go to the users key
+        const data = snapshot.val().users;
+        for (let key in data) {
+          // since ther is no ignoreCase method in javaScript use upper instead
+          if (username.toUpperCase() === data[key].username.toUpperCase()) {
+            usernameFree = false;
+            break;
           }
-          swal.fire(`SUP ${user}`, "Your logged in.", "success");
-        } else if (result.dismiss === swal.DismissReason.cancel) {
+        }
+        if (usernameFree === true) {
+          const dbRef2 = firebase.database().ref("users/");
+          dbRef2.push({
+            username: username,
+            password: password,
+            nominations: [],
+          });
+          setCurrUser(username);
+          setIsLoggedIn(true);
         }
       });
+    return usernameFree;
+  };
+
+  //function to verify login
+  const logUserIn = async (username, password) => {
+    let correctSignIn = false;
+    const dbref = await firebase
+      .database()
+      .ref()
+      .once("value", (snapshot) => {
+        // in the data go to the users key
+        const data = snapshot.val().users;
+        for (let key in data) {
+          if (
+            username === data[key].username &&
+            password === data[key].password
+          ) {
+            setCurrUser(username);
+            setIsLoggedIn(true);
+            correctSignIn = true;
+          }
+        }
+      });
+    return correctSignIn;
   };
 
   return (
