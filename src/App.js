@@ -18,41 +18,62 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currUser, setCurrUser] = useState("");
   const [userNominations, setUserNominations] = useState([]);
+  // boolean to check if user has 5 nominees assume not full
+  const [fiveNominees, setFiveNominees] = useState(false);
 
   // functions
 
+
+  // hook to update users page when loggedin
+  useEffect(() => {
+    async function waitForDownload() {
+      let download = await downloadUserNominations();
+      return download;
+    }
+    waitForDownload().then((status) => {
+      console.log(status);
+    });
+  }, [currUser]);
+
   // function to run when component mounts (ie gather user data and new nominations)
-  useEffect(()=> {
-  const dbRef = firebase.database().ref();
-  dbRef.on("value", (snapshot) => {
+  useEffect(() => {
+    const dbRef = firebase.database().ref();
+    dbRef.on("value", (snapshot) => {
       // const nominationsdata = snapshot.val().allNominations;
       // const updatedNominations = [];
       // for(let key in nominationsdata) {
       //   updatedNominations.push(data[key]);
       // };
       // update loggedin users personal nominations
-      if(isLoggedIn === true){
+      if (isLoggedIn === true) {
         const updatedUserNominations = [];
         const users = snapshot.val().users;
-        for(let key in users) {
-          if(users[key].username === currUser){
-            console.log(users[key].username)
-            if((users[key].username.nominations)){
-              for(let i =0; i<users[key].username.nominations.length-1; i++){
+        for (let key in users) {
+          if (users[key].username === currUser) {
+            if (users[key].username.nominations) {
+              // check if user has five nominees
+              if (users[key].username.nominations.length === 5) {
+                setFiveNominees(true);
+              }
+              // update the nominee list
+              for (
+                let i = 0;
+                i < users[key].username.nominations.length - 1;
+                i++
+              ) {
                 updatedUserNominations.push(users[key].username.nominations[i]);
               }
             }
             setUserNominations(updatedUserNominations);
             break;
           }
-        };
+        }
       }
-    })
+    });
   }, []);
 
-
-
   const handleSearch = (e, query) => {
+    setResults([]);
     setIsSearching(true);
     e.preventDefault();
     axios({
@@ -81,23 +102,79 @@ const App = () => {
     setSearchMessage("");
   };
 
-  const handleSignInAndRegister = () => {
-    swal
-      .fire({
-        title: `Sign In or Register`,
-        showCancelButton: true,
-        confirmButtonText: `Sign In`,
-        cancelButtonText: `Register`,
-      })
-      .then((result) => {
-        if (result.value) {
-          credentialsPrompt("Sign In");
-        } else if (result.dismiss === swal.DismissReason.cancel) {
-          credentialsPrompt("Register");
+  const addNomination = (nominee) => {
+    const dbRef = firebase.database().ref();
+    let userKey = "";
+    dbRef.once("value", (snapshot) => {
+      const data = snapshot.val().users;
+      // if not full nominations
+      if (fiveNominees === false) {
+        for (let key in data) {
+          if (currUser.toUpperCase() === data[key].username.toUpperCase()) {
+            userKey = key;
+            break;
+          }
         }
-      });
+      } else {
+        swal
+      }
+    });
+    const newNominations = userNominations;
+    newNominations.push(nominee);
+    const userRef = dbRef.child("users").child(userKey);
+    userRef.update({ nominations: newNominations });
+    updateAllNominations(nominee);
   };
-  // function name = async (p) => {const prompt = await swal({})}
+
+  const updateAllNominations = (nominee) => {
+    const { poster, title, year, id } = nominee;
+    const dbRef = firebase.database().ref();
+    const allNomRef = dbRef.child("allNominations");
+    dbRef.once("value", (snapshot) => {
+      const data = snapshot.val().allNominations;
+      let nomKey = "";
+      for (let key in data) {
+        if (nominee.id === data[key].id) {
+          nomKey = key;
+          break;
+        }
+      }
+    });
+    if(nomKey !== ""){
+      const prevVal = allNomRef.child(nomKey).tally;
+      allNomRef.child(nomKey).update({ tally: prevVal + 1 });
+    } else {
+      allNomRef.push({
+        poster: poster,
+        title: title,
+        year: year,
+        id: id,
+        tally: 0
+      });
+    }
+  };
+
+  const handleSignInAndRegister = () => {
+    if (isLoggedIn === true) {
+      window.location.reload(true);
+    } else {
+      swal
+        .fire({
+          title: `Sign In or Register`,
+          showCancelButton: true,
+          confirmButtonText: `Sign In`,
+          cancelButtonText: `Register`,
+        })
+        .then((result) => {
+          if (result.value) {
+            credentialsPrompt("Sign In");
+          } else if (result.dismiss === swal.DismissReason.cancel) {
+            credentialsPrompt("Register");
+          }
+        });
+    }
+  };
+
   const credentialsPrompt = async (signMethod) => {
     const promptArr = [];
     let username = "";
@@ -138,9 +215,18 @@ const App = () => {
                   return checkLog;
                 }
                 validLogin().then((validity) => {
+                  // console.log("1 validity user is ", currUser);
                   validity === true
                     ? promptArr[2]("Signed In Successfully!")
                     : promptArr[1]("Incorrect Username/Password!");
+                  // console.log("2 validity user is ", currUser);
+                  // async function waitForDownload() {
+                  //   let download = await downloadUserNominations();
+                  //   return download;
+                  // }
+                  // waitForDownload().then((status) => {
+                  //   console.log(status);
+                  // });
                 });
               }
             }
@@ -168,16 +254,44 @@ const App = () => {
     promptArr.push(credentialsError);
 
     const credentialsSuccess = (success) => {
-      swal.fire({
-        icon: "success",
-        title: "Success",
-        text: success,
-        showCancelButton: false,
-      });
+      // if (validity === true) {
+      //   console.log("plezaa", validity);
+        swal.fire({
+          icon: "success",
+          title: "Success",
+          text: success,
+          showCancelButton: false,
+        });
     };
     promptArr.push(credentialsSuccess);
     // to call a function just promptArr[desiredCall](params)
     promptArr[0]();
+  };
+
+  // downloads the users nominations
+  const downloadUserNominations = async () => {
+    let newStuff = [];
+    const dbRef = await firebase
+      .database()
+      .ref()
+      .once("value", (snapshot) => {
+        // in the data go to the users key
+        const data = snapshot.val().users;
+        for (let key in data) {
+          // when they log in set each users nominations
+          console.log(
+            `currUser: ${currUser} datakeyusernam: ${data[key].username}`
+          );
+          if (currUser.toUpperCase() === data[key].username.toUpperCase()) {
+            console.log("yo stuff", data[key].nominations);
+            if (data[key].nominations) {
+              setUserNominations(data[key].nominations);
+              newStuff = userNominations;
+            }
+          }
+        }
+      });
+    return newStuff;
   };
 
   // function to register new users with unique usernames returns true if a username is available and has now been registered successfully
@@ -236,12 +350,23 @@ const App = () => {
   return (
     <div className="App">
       <Navigation
+        isLoggedIn={isLoggedIn}
         handleSearch={handleSearch}
         closeSearch={closeSearch}
         handleSignInAndRegister={handleSignInAndRegister}
       />
-      {isSearching && (<SearchResults results={results} searchMessage={searchMessage} />)}
-      {isSearching === false && isLoggedIn === true && (<UserNominations userNominations={userNominations}/>)}
+      {isSearching && (
+        <SearchResults
+          results={results}
+          searchMessage={searchMessage}
+          handleSignInAndRegister={handleSignInAndRegister}
+          addNomination={addNomination}
+          isLoggedIn={isLoggedIn}
+        />
+      )}
+      {isSearching === false && isLoggedIn === true && (
+        <UserNominations userNominations={userNominations} />
+      )}
     </div>
   );
 };

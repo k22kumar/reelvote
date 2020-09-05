@@ -1,7 +1,20 @@
 import React, { useState } from "react";
 
 const MovieOption = (props) => {
-  const { poster, title, year, id } = props;
+  const {
+    poster,
+    title,
+    year,
+    id,
+    handleSignInAndRegister,
+    addNomination,
+    isLoggedIn,
+  } = props;
+
+  const handleNominate = () => {
+   addNomination(nominee);
+  }
+  const nominee = {poster: poster, title: title, id: id, year: year};
   return (
     <ul>
       <li>
@@ -25,7 +38,15 @@ const MovieOption = (props) => {
         }
       </li>
       <li>
-        <button>Nominate</button>
+        <button
+          onClick={
+            isLoggedIn === true
+              ? handleNominate
+              : handleSignInAndRegister
+          }
+        >
+          Nominate
+        </button>
         <p>{year}</p>
       </li>
     </ul>
