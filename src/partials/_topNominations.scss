@@ -1,5 +1,10 @@
 .topNominations {
-    margin: 20px 0;
+    margin-bottom: 20px;
+    height: 25vw;
+    min-height: 200px;
+    
+}
+.carousel-root, .carousel-slider.carousel, .slider-wrapper, .slider.animated {
     height: 100%;
 }
 
@@ -25,13 +30,13 @@
     border-radius: $bigRadius;
     overflow: hidden;
     img{
-        max-height: 100%;
+        object-fit: contain;
     }
 }
 
 .topDetails {
     height: 100%;
-    color: blue;
+    color: $fontColourS;
     background-color: $bgSecondary;
     width: 60%; 
 }

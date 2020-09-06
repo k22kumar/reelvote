@@ -18,6 +18,7 @@ const TopNominations = (props) => {
           autoPlay={true}
           swipeable={true}
           dynamicHeight={false}
+          showStatus={false}
         >
           {publicNominations.slice(0, 3).map((nomObj, index) => {
               const {title, id, poster, tally} = nomObj;

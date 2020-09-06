@@ -242,6 +242,7 @@ html {
 
 nav {
   background-color: #EFFCFA;
+  height: 80px;
 }
 
 body, html {
@@ -257,6 +258,11 @@ ul {
 h1, h2, h3, p {
   padding: 0;
   margin: 0;
+}
+
+h1 {
+  width: 255px;
+  text-align: center;
 }
 
 h2 {
@@ -288,6 +294,7 @@ button {
   padding: 10px 12px;
   -webkit-transition: all 0.1s ease;
   transition: all 0.1s ease;
+  cursor: pointer;
 }
 
 button:hover {
@@ -333,8 +340,44 @@ button:hover {
       flex-wrap: wrap;
 }
 
+.navigation {
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+.toggleSearch, .account, .searchContainer input {
+  height: 35px;
+}
+
+.toggleSearch {
+  width: 35px;
+}
+
+.searchContainer input {
+  width: 221px;
+  font-size: 2rem;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  padding: 0 15px;
+  border: none;
+}
+
+.searchButton {
+  background-color: #95BF47;
+  border-radius: 0;
+  height: 40px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
 .topNominations {
-  margin: 20px 0;
+  margin-bottom: 20px;
+  height: 25vw;
+  min-height: 200px;
+}
+
+.carousel-root, .carousel-slider.carousel, .slider-wrapper, .slider.animated {
   height: 100%;
 }
 
@@ -363,12 +406,13 @@ button:hover {
 }
 
 .topImgContainer img {
-  max-height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .topDetails {
   height: 100%;
-  color: blue;
+  color: white;
   background-color: #95BF47;
   width: 60%;
 }

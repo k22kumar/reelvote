@@ -29,22 +29,14 @@ const Navigation = (props) => {
   };
 
   return (
-    <nav>
-      <button>Menu</button>
-      {!userSearching && (
-        <div>
-          <button onClick={toggleSearch}>
-            <i className="fas fa-search"></i>
-          </button>
-          <h1>Shoppies</h1>
-          <button onClick={handleSignInAndRegister}>
-            {isLoggedIn === false ? "Sign In/Up" : "Sign Out"}
-          </button>
-        </div>
-      )}
+    <nav className="flexParent navigation">
+      <button className="account" onClick={handleSignInAndRegister}>
+        {isLoggedIn === false ? "Sign In/Up" : "Sign Out"}
+      </button>
+      {!userSearching && <h1>Shoppies</h1>}
       {userSearching && (
-        <div>
-          <form action="" onSubmit={defferedSearch}>
+        <div className="flexParent searchContainer">
+          <form className="flexParent" action="" onSubmit={defferedSearch}>
             <label htmlFor="movieSearch"></label>
             <input
               id="movieSearch"
@@ -53,14 +45,21 @@ const Navigation = (props) => {
               placeholder="Search movies"
               onChange={handleInput}
             />
-            <button type="submit">
+            <button class="searchButton" type="submit">
               <i className="fas fa-search"></i>
             </button>
           </form>
-          <button onClick={handleCloseSearch}>
-            <i className="fas fa-times"></i>
-          </button>
         </div>
+      )}
+      {userSearching && (
+        <button className="toggleSearch" onClick={handleCloseSearch}>
+          <i className="fas fa-times"></i>
+        </button>
+      )}
+      {!userSearching && (
+        <button className="toggleSearch" onClick={toggleSearch}>
+          <i className="fas fa-search"></i>
+        </button>
       )}
     </nav>
   );

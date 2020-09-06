@@ -5,6 +5,7 @@ html {
 
 nav{
     background-color: $navBG;
+    height: 80px;
 }
 
 body, html{
@@ -20,6 +21,11 @@ ul {
 h1,h2,h3,p {
     padding: 0;
     margin: 0;
+}
+
+h1 {
+    width: 255px;
+    text-align: center;
 }
 
 h2 {
@@ -50,6 +56,7 @@ button {
     color: $fontColourS;
     padding: 10px 12px;
     transition: all 0.1s ease;
+    cursor: pointer;
     &:hover {
         background-color: $buttonHover;
     }
