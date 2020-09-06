@@ -3,6 +3,7 @@ import "./App.css";
 import axios from "axios";
 import Navigation from "./components/Navigation";
 import SearchResults from "./components/SearchResults";
+import MovieOption from "./components/MovieOption";
 import UserNominations from "./components/UserNominations";
 import firebase from "./components/Firebase";
 import swal from "sweetalert2";
@@ -14,9 +15,13 @@ const App = () => {
   const [results, setResults] = useState([]);
   // check if user is searching
   const [isSearching, setIsSearching] = useState(false);
+  // message informing if there were any results
   const [searchMessage, setSearchMessage] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [publicNominations, setPublicNominations] = useState([]);
+  // current username
   const [currUser, setCurrUser] = useState("");
+  // current users nominations
   const [userNominations, setUserNominations] = useState([]);
   // boolean to check if user has 5 nominees assume not full
   const [fiveNominees, setFiveNominees] = useState(false);
@@ -32,15 +37,21 @@ const App = () => {
     waitForDownload().then((status) => {});
   }, [currUser]);
 
+
+
   // function to run when component mounts (ie gather user data and new nominations)
   useEffect(() => {
     const dbRef = firebase.database().ref();
     dbRef.on("value", (snapshot) => {
-      // const nominationsdata = snapshot.val().allNominations;
-      // const updatedNominations = [];
-      // for(let key in nominationsdata) {
-      //   updatedNominations.push(data[key]);
-      // };
+      const nominationsdata = snapshot.val().allNominations;
+      const updatedNominations = [];
+      for(let key in nominationsdata) {
+        if(nominationsdata[key].tally > 0){
+          updatedNominations.push(nominationsdata[key]);
+        }
+      };
+      setPublicNominations(updatedNominations);
+
       // update loggedin users personal nominations
       if (isLoggedIn === true) {
         const updatedUserNominations = [];
@@ -145,7 +156,9 @@ const App = () => {
     const newNominations = userNominations.filter((nomObj)=>{
       return nomObj.id !== nominee.id;
     });
-    newNominations.push(nominee);
+    console.log("old", userNominations);
+    console.log("new", newNominations);
+    setUserNominations(newNominations);
     const userRef = dbRef.child("users").child(userKey);
     userRef.update({ nominations: newNominations });
     updateAllNominations(nominee, "remove");
@@ -157,29 +170,31 @@ const App = () => {
     const dbRef = firebase.database().ref();
     const allNomRef = dbRef.child("allNominations");
     let nomKey = "";
+    let prevTally = 0;
     dbRef.once("value", (snapshot) => {
       const data = snapshot.val().allNominations;
       for (let key in data) {
         if (nominee.id === data[key].id) {
           nomKey = key;
+          prevTally = data[key].tally;
           break;
         }
       }
     });
-    if (nomKey !== "" && action === "remove" && allNomRef.child(nomKey).tally > 0) {
-      const prevVal = allNomRef.child(nomKey).tally;
-      allNomRef.child(nomKey).update({ tally: prevVal - 1 });
-    }
-    else if (nomKey !== "" && action === "add") {
-      const prevVal = allNomRef.child(nomKey).tally;
-      allNomRef.child(nomKey).update({ tally: prevVal + 1 });
+    console.log("nomKey: ", nomKey);
+    if (nomKey !== "" && action === "remove" && prevTally > 0) {
+      allNomRef.child(nomKey).update({ tally: prevTally - 1 });
+    } else if (nomKey !== "" && action === "add") {
+      console.log("adding only")
+      allNomRef.child(nomKey).update({ tally: prevTally + 1 });
     } else {
+      console.log("pushing only");
       allNomRef.push({
         poster: poster,
         title: title,
         year: year,
         id: id,
-        tally: 0,
+        tally: 1,
       });
     }
   };
@@ -378,6 +393,8 @@ const App = () => {
           handleSignInAndRegister={handleSignInAndRegister}
           addNomination={addNomination}
           isLoggedIn={isLoggedIn}
+          userNominations={userNominations}
+          removeNominee={removeNominee}
         />
       )}
       {isSearching === false && isLoggedIn === true && (
@@ -385,6 +402,28 @@ const App = () => {
           userNominations={userNominations}
           removeNominee={removeNominee}
         />
+      )}
+      {isSearching === false && (
+        <section>
+        <h2>Public Nominations</h2>
+          {publicNominations.map((nomObj, index)=> {
+            const {poster: poster, title: title, id: id, year: year, tally: tally} = nomObj;
+            return (
+              <MovieOption
+                key={index}
+                id={id}
+                title={title}
+                poster={poster}
+                year={year}
+                handleSignInAndRegister={handleSignInAndRegister}
+                isLoggedIn={isLoggedIn}
+                addNomination={addNomination}
+                removeNominee={removeNominee}
+                userNominations={userNominations}
+              />
+            );
+          })}
+        </section>
       )}
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import MovieOption from "./MovieOption.js";
 
 const UserNominations = (props) => {
@@ -18,6 +18,7 @@ const UserNominations = (props) => {
                         id={id}
                         year={year}
                         removeNominee={removeNominee}
+                        userNominations={userNominations}
                       />
                     );
                     })}

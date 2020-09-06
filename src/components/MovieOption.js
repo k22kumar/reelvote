@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const MovieOption = (props) => {
+  const [isNominee, setIsNominee] = useState(false);
+
   const {
     poster,
     title,
@@ -8,12 +10,31 @@ const MovieOption = (props) => {
     id,
     handleSignInAndRegister,
     addNomination,
-    isLoggedIn
+    isLoggedIn,
+    userNominations,
+    removeNominee
   } = props;
+
+  useEffect(() => {
+    if(userNominations.length>0){
+      userNominations.map((nomObj) => {
+        if(nomObj.id === id) {
+          setIsNominee(true);
+        }
+      })
+    }
+  }, [userNominations]);
 
   const handleNominate = () => {
    addNomination(nominee);
+   setIsNominee(true);
   }
+
+  const handleRemoveNominee = () => {
+    removeNominee(nominee);
+    setIsNominee(false);
+  }
+
   const nominee = {poster: poster, title: title, id: id, year: year};
   return (
     <ul>
@@ -38,16 +59,18 @@ const MovieOption = (props) => {
         }
       </li>
       <li>
-        <button
-          onClick={
-            // Is user loggedin? if not ask to sign in, if they are check if the remove func was passed meaning it is an option on the nomination page if not then keep handle func
-            isLoggedIn === true ? 
-            ( props.removeNominee ? () => {props.removeNominee(nominee)} : handleNominate )
-              : handleSignInAndRegister
-          }
-        >
-          Nominate
-        </button>
+        {isNominee === true && (
+          <button onClick={handleRemoveNominee}>Remove</button>
+        )}
+        {isNominee === false && (
+          <button
+            onClick={
+              // Is user loggedin? if not ask to sign in, if they are check if the remove func was passed meaning it is an option on the nomination page if not then keep handle func
+              isLoggedIn === true ? handleNominate : handleSignInAndRegister
+            }>
+            Nominate
+          </button>
+        )}
         <p>{year}</p>
       </li>
     </ul>

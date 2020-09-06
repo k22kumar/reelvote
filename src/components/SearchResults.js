@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import MovieOption from "./MovieOption";
 
 const SearchResults = (props) => {
@@ -8,6 +8,8 @@ const SearchResults = (props) => {
     handleSignInAndRegister,
     isLoggedIn,
     addNomination,
+    removeNominee,
+    userNominations
   } = props;
   return (
     <div>
@@ -24,6 +26,8 @@ const SearchResults = (props) => {
             handleSignInAndRegister={handleSignInAndRegister}
             isLoggedIn={isLoggedIn}
             addNomination={addNomination}
+            removeNominee={removeNominee}
+            userNominations={userNominations}
           />
         );
       })}
