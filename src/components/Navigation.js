@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 
 const Navigation = (props) => {
-  const { handleSearch, closeSearch, handleSignInAndRegister, isLoggedIn } = props;
+  const {
+    handleSearch,
+    closeSearch,
+    handleSignInAndRegister,
+    isLoggedIn,
+  } = props;
   // checks for when user clicks to search
   const [userSearching, setUserSearching] = useState(false);
   const [query, setQuery] = useState("");
@@ -32,11 +37,9 @@ const Navigation = (props) => {
             <i className="fas fa-search"></i>
           </button>
           <h1>Shoppies</h1>
-          <button onClick={handleSignInAndRegister}>{
-            isLoggedIn === false ?
-             "Sign In/Up" :
-             "Sign Out" 
-          }</button>
+          <button onClick={handleSignInAndRegister}>
+            {isLoggedIn === false ? "Sign In/Up" : "Sign Out"}
+          </button>
         </div>
       )}
       {userSearching && (

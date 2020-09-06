@@ -1,0 +1,87 @@
+html {
+    background-color: $bgPrimary;
+    font-size: 62.5%;
+}
+
+nav{
+    background-color: $navBG;
+}
+
+body, html{
+    overflow-x: hidden;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+h1,h2,h3,p {
+    padding: 0;
+    margin: 0;
+}
+
+h2 {
+    font-size: 2.8rem;
+}
+
+p {
+    line-height: 1.5;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+}
+
+label {
+    font-size: 1.7rem;
+    }
+
+button {
+    border: 0;
+    border-radius: $smallRadius;
+    background-color: $buttonPrimary;
+    color: $fontColourS;
+    padding: 10px 12px;
+    transition: all 0.1s ease;
+    &:hover {
+        background-color: $buttonHover;
+    }
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 70%;
+    max-width: 1280px;
+}
+
+.flexParent {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.flexColumn {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+}
+
+.flexWrap {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+}
+

@@ -9,28 +9,30 @@ const SearchResults = (props) => {
     isLoggedIn,
     addNomination,
     removeNominee,
-    userNominations
+    userNominations,
   } = props;
   return (
     <div>
       <h2>{searchMessage}</h2>
-      {results.length>0 && results.map((movie, index) => {
-        const { Poster, Title, Year, imdbID } = movie;
-        return (
-          <MovieOption
-            key={index}
-            id={imdbID}
-            title={Title}
-            poster={Poster}
-            year={Year}
-            handleSignInAndRegister={handleSignInAndRegister}
-            isLoggedIn={isLoggedIn}
-            addNomination={addNomination}
-            removeNominee={removeNominee}
-            userNominations={userNominations}
-          />
-        );
-      })}
+      {results.length > 0 &&
+        results.map((movie, index) => {
+          const { Poster, Title, Year, imdbID } = movie;
+          return (
+            <MovieOption
+              key={index}
+              id={imdbID}
+              title={Title}
+              poster={Poster}
+              year={Year}
+              handleSignInAndRegister={handleSignInAndRegister}
+              isLoggedIn={isLoggedIn}
+              addNomination={addNomination}
+              removeNominee={removeNominee}
+              userNominations={userNominations}
+              tally={0}
+            />
+          );
+        })}
     </div>
   );
 };

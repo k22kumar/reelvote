@@ -12,40 +12,40 @@ const MovieOption = (props) => {
     addNomination,
     isLoggedIn,
     userNominations,
-    removeNominee
+    removeNominee,
+    tally,
   } = props;
 
   useEffect(() => {
-    if(userNominations.length>0){
+    if (userNominations.length > 0) {
       userNominations.map((nomObj) => {
-        if(nomObj.id === id) {
+        if (nomObj.id === id) {
           setIsNominee(true);
         }
-      })
+      });
     }
   }, [userNominations]);
 
   const handleNominate = () => {
-   addNomination(nominee);
-   setIsNominee(true);
-  }
+    addNomination(nominee);
+    setIsNominee(true);
+  };
 
   const handleRemoveNominee = () => {
     removeNominee(nominee);
     setIsNominee(false);
-  }
+  };
 
-  const nominee = {poster: poster, title: title, id: id, year: year};
+  const nominee = {
+    poster: poster,
+    title: title,
+    id: id,
+    year: year,
+    tally: tally,
+  };
   return (
-    <ul>
-      <li>
-        <div>
-          <i className="fas fa-award"></i>
-          <p>0</p>
-        </div>
-        <h3>{title}</h3>
-      </li>
-      <li>
+    <ul className="flexParent flexColumn movieOption">
+      <li className="flexParent imgContainer">
         {
           // if ther is no pic than put default no image available
           poster === "N/A" ? (
@@ -58,20 +58,33 @@ const MovieOption = (props) => {
           )
         }
       </li>
-      <li>
+      <li className="movieDetails">
+        <h3>{title}</h3>
+        <p>{year}</p>
+      </li>
+      {tally > 0 && (
+        <li className="flexParent tally">
+          <i className="fas fa-award"></i>
+          <p>{tally}</p>
+        </li>
+      )}
+      <li className="nominateButton">
         {isNominee === true && (
-          <button onClick={handleRemoveNominee}>Remove</button>
+          <button className="swal2-styled" onClick={handleRemoveNominee}>
+            Remove
+          </button>
         )}
         {isNominee === false && (
           <button
+            className="swal2-styled"
             onClick={
               // Is user loggedin? if not ask to sign in, if they are check if the remove func was passed meaning it is an option on the nomination page if not then keep handle func
               isLoggedIn === true ? handleNominate : handleSignInAndRegister
-            }>
+            }
+          >
             Nominate
           </button>
         )}
-        <p>{year}</p>
       </li>
     </ul>
   );

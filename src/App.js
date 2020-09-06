@@ -28,30 +28,20 @@ const App = () => {
 
   // functions
 
-  // hook to update users page when loggedin
-  useEffect(() => {
-    async function waitForDownload() {
-      let download = await downloadUserNominations();
-      return download;
-    }
-    waitForDownload().then((status) => {});
-  }, [currUser]);
-
-
-
   // function to run when component mounts (ie gather user data and new nominations)
   useEffect(() => {
     const dbRef = firebase.database().ref();
     dbRef.on("value", (snapshot) => {
       const nominationsdata = snapshot.val().allNominations;
       const updatedNominations = [];
-      for(let key in nominationsdata) {
-        if(nominationsdata[key].tally > 0){
+      for (let key in nominationsdata) {
+        if (nominationsdata[key].tally > 0) {
           updatedNominations.push(nominationsdata[key]);
         }
-      };
+      }
+      //sort public nominations by votes
+      updatedNominations.sort((a, b) => b.tally - a.tally);
       setPublicNominations(updatedNominations);
-
       // update loggedin users personal nominations
       if (isLoggedIn === true) {
         const updatedUserNominations = [];
@@ -79,6 +69,15 @@ const App = () => {
       }
     });
   }, []);
+
+  // hook to update users page when loggedin
+  useEffect(() => {
+    async function waitForDownload() {
+      let download = await downloadUserNominations();
+      return download;
+    }
+    waitForDownload().then((status) => {});
+  }, [currUser]);
 
   const handleSearch = (e, query) => {
     setResults([]);
@@ -141,28 +140,25 @@ const App = () => {
   };
 
   const removeNominee = (nominee) => {
-    console.log("remove");
     const dbRef = firebase.database().ref();
     let userKey = "";
     dbRef.once("value", (snapshot) => {
       const data = snapshot.val().users;
-        for (let key in data) {
-          if (currUser.toUpperCase() === data[key].username.toUpperCase()) {
-            userKey = key;
-            break;
-          }
+      for (let key in data) {
+        if (currUser.toUpperCase() === data[key].username.toUpperCase()) {
+          userKey = key;
+          break;
         }
+      }
     });
-    const newNominations = userNominations.filter((nomObj)=>{
+    const newNominations = userNominations.filter((nomObj) => {
       return nomObj.id !== nominee.id;
     });
-    console.log("old", userNominations);
-    console.log("new", newNominations);
     setUserNominations(newNominations);
     const userRef = dbRef.child("users").child(userKey);
     userRef.update({ nominations: newNominations });
     updateAllNominations(nominee, "remove");
-  }
+  };
 
   // function to update the tallies on all nominations from all users
   const updateAllNominations = (nominee, action) => {
@@ -181,14 +177,11 @@ const App = () => {
         }
       }
     });
-    console.log("nomKey: ", nomKey);
     if (nomKey !== "" && action === "remove" && prevTally > 0) {
       allNomRef.child(nomKey).update({ tally: prevTally - 1 });
     } else if (nomKey !== "" && action === "add") {
-      console.log("adding only")
       allNomRef.child(nomKey).update({ tally: prevTally + 1 });
     } else {
-      console.log("pushing only");
       allNomRef.push({
         poster: poster,
         title: title,
@@ -404,25 +397,34 @@ const App = () => {
         />
       )}
       {isSearching === false && (
-        <section>
-        <h2>Public Nominations</h2>
-          {publicNominations.map((nomObj, index)=> {
-            const {poster: poster, title: title, id: id, year: year, tally: tally} = nomObj;
-            return (
-              <MovieOption
-                key={index}
-                id={id}
-                title={title}
-                poster={poster}
-                year={year}
-                handleSignInAndRegister={handleSignInAndRegister}
-                isLoggedIn={isLoggedIn}
-                addNomination={addNomination}
-                removeNominee={removeNominee}
-                userNominations={userNominations}
-              />
-            );
-          })}
+        <section className="publicNominations">
+          <h2>Public Nominations</h2>
+          <div className="flexParent publicList">
+            {publicNominations.map((nomObj, index) => {
+              const {
+                poster: poster,
+                title: title,
+                id: id,
+                year: year,
+                tally: tally,
+              } = nomObj;
+              return (
+                <MovieOption
+                  key={index}
+                  id={id}
+                  title={title}
+                  poster={poster}
+                  year={year}
+                  handleSignInAndRegister={handleSignInAndRegister}
+                  isLoggedIn={isLoggedIn}
+                  addNomination={addNomination}
+                  removeNominee={removeNominee}
+                  userNominations={userNominations}
+                  tally={tally}
+                />
+              );
+            })}
+          </div>
         </section>
       )}
     </div>
