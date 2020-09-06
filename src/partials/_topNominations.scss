@@ -1,0 +1,42 @@
+.topNominations {
+    margin-bottom: 20px;
+    height: 25vw;
+    min-height: 200px;
+    
+}
+.carousel-root, .carousel-slider.carousel, .slider-wrapper, .slider.animated {
+    height: 100%;
+}
+
+.topContainer {
+    width: 100%;
+    height: 100%;
+    ul{
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.imgLI{
+    width: 40%;
+    height: 100%;
+    background-color: $bgSecondary;
+}
+
+.topImgContainer{
+    width: 50%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: $bigRadius;
+    overflow: hidden;
+    img{
+        object-fit: contain;
+    }
+}
+
+.topDetails {
+    height: 100%;
+    color: $fontColourS;
+    background-color: $bgSecondary;
+    width: 60%; 
+}

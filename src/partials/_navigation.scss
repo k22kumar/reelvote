@@ -1,0 +1,31 @@
+.navigation {
+    justify-content: space-evenly;
+}
+
+.toggleSearch, .account, .searchContainer input {
+    height: 35px;
+}
+
+.toggleSearch {
+    width: 35px;
+}
+
+.searchContainer{
+    input {
+        width: 221px;
+        font-size: 2rem;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        padding: 0 15px;
+        border: none;
+    }
+}
+
+.searchButton {
+        background-color:$bgSecondary;
+        border-radius: 0;
+        height: 40px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        
+    }
