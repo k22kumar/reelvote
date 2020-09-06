@@ -5,6 +5,7 @@ import Navigation from "./components/Navigation";
 import SearchResults from "./components/SearchResults";
 import MovieOption from "./components/MovieOption";
 import UserNominations from "./components/UserNominations";
+import TopNominations from "./components/TopNominations"
 import firebase from "./components/Firebase";
 import swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -124,6 +125,7 @@ const App = () => {
         }
       } else {
         swal.fire({
+          scrollbarPadding: false,
           icon: "error",
           title: "Oops...",
           text: "You cant nominate more than 5 times!",
@@ -198,6 +200,7 @@ const App = () => {
     } else {
       swal
         .fire({
+          scrollbarPadding: false,
           title: `Sign In or Register`,
           showCancelButton: true,
           confirmButtonText: `Sign In`,
@@ -220,6 +223,7 @@ const App = () => {
     const credentials = () => {
       swal
         .fire({
+          scrollbarPadding: false,
           title: signMethod,
           html: `<input id='username' class="swal2-input" required type='email' placeholder="your username ..." value=${username}> <br/> <input class="swal2-input" required id='password' type='password' value='${password}' placeholder="your password ...">`,
           showCancelButton: true,
@@ -268,6 +272,7 @@ const App = () => {
     const credentialsError = (error) => {
       swal
         .fire({
+          scrollbarPadding: false,
           icon: "error",
           title: "Oops...",
           text: error,
@@ -284,6 +289,7 @@ const App = () => {
 
     const credentialsSuccess = (success) => {
       swal.fire({
+        scrollbarPadding: false,
         icon: "success",
         title: "Success",
         text: success,
@@ -379,7 +385,13 @@ const App = () => {
         closeSearch={closeSearch}
         handleSignInAndRegister={handleSignInAndRegister}
       />
-      {isSearching && (
+      {publicNominations.length > 0 && isSearching === false && (
+        <TopNominations
+          handleSignInAndRegister={handleSignInAndRegister}
+          publicNominations={publicNominations}
+        />
+      )}
+      {isSearching === true && (
         <SearchResults
           results={results}
           searchMessage={searchMessage}

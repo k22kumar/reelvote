@@ -333,6 +333,46 @@ button:hover {
       flex-wrap: wrap;
 }
 
+.topNominations {
+  margin: 20px 0;
+  height: 100%;
+}
+
+.topContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.topContainer ul {
+  height: 100%;
+  width: 100%;
+}
+
+.imgLI {
+  width: 40%;
+  height: 100%;
+  background-color: #95BF47;
+}
+
+.topImgContainer {
+  width: 50%;
+  height: 100%;
+  max-height: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.topImgContainer img {
+  max-height: 100%;
+}
+
+.topDetails {
+  height: 100%;
+  color: blue;
+  background-color: #95BF47;
+  width: 60%;
+}
+
 .movieOption {
   width: 180px;
   border-radius: 18px;
@@ -363,6 +403,7 @@ button:hover {
 
 .nominateButton {
   font-size: 1.4rem;
+  margin: 10px 0;
 }
 
 .imgContainer {
