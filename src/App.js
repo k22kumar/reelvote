@@ -23,16 +23,13 @@ const App = () => {
 
   // functions
 
-
   // hook to update users page when loggedin
   useEffect(() => {
     async function waitForDownload() {
       let download = await downloadUserNominations();
       return download;
     }
-    waitForDownload().then((status) => {
-      console.log(status);
-    });
+    waitForDownload().then((status) => {});
   }, [currUser]);
 
   // function to run when component mounts (ie gather user data and new nominations)
@@ -116,23 +113,52 @@ const App = () => {
           }
         }
       } else {
-        swal
+        swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "You cant nominate more than 5 times!",
+          showCancelButton: true,
+          cancelButtonText: "Back",
+        });
       }
     });
     const newNominations = userNominations;
     newNominations.push(nominee);
     const userRef = dbRef.child("users").child(userKey);
     userRef.update({ nominations: newNominations });
-    updateAllNominations(nominee);
+    updateAllNominations(nominee, "add");
   };
 
-  const updateAllNominations = (nominee) => {
+  const removeNominee = (nominee) => {
+    console.log("remove");
+    const dbRef = firebase.database().ref();
+    let userKey = "";
+    dbRef.once("value", (snapshot) => {
+      const data = snapshot.val().users;
+        for (let key in data) {
+          if (currUser.toUpperCase() === data[key].username.toUpperCase()) {
+            userKey = key;
+            break;
+          }
+        }
+    });
+    const newNominations = userNominations.filter((nomObj)=>{
+      return nomObj.id !== nominee.id;
+    });
+    newNominations.push(nominee);
+    const userRef = dbRef.child("users").child(userKey);
+    userRef.update({ nominations: newNominations });
+    updateAllNominations(nominee, "remove");
+  }
+
+  // function to update the tallies on all nominations from all users
+  const updateAllNominations = (nominee, action) => {
     const { poster, title, year, id } = nominee;
     const dbRef = firebase.database().ref();
     const allNomRef = dbRef.child("allNominations");
+    let nomKey = "";
     dbRef.once("value", (snapshot) => {
       const data = snapshot.val().allNominations;
-      let nomKey = "";
       for (let key in data) {
         if (nominee.id === data[key].id) {
           nomKey = key;
@@ -140,7 +166,11 @@ const App = () => {
         }
       }
     });
-    if(nomKey !== ""){
+    if (nomKey !== "" && action === "remove" && allNomRef.child(nomKey).tally > 0) {
+      const prevVal = allNomRef.child(nomKey).tally;
+      allNomRef.child(nomKey).update({ tally: prevVal - 1 });
+    }
+    else if (nomKey !== "" && action === "add") {
       const prevVal = allNomRef.child(nomKey).tally;
       allNomRef.child(nomKey).update({ tally: prevVal + 1 });
     } else {
@@ -149,7 +179,7 @@ const App = () => {
         title: title,
         year: year,
         id: id,
-        tally: 0
+        tally: 0,
       });
     }
   };
@@ -183,7 +213,7 @@ const App = () => {
       swal
         .fire({
           title: signMethod,
-          html: `<input id='username' class="swal2-input" required type='email' placeholder="your username ..." value=${username}> <br/> <input class="swal2-input" required id='password' type='password value=${password}' placeholder="your password ...">`,
+          html: `<input id='username' class="swal2-input" required type='email' placeholder="your username ..." value=${username}> <br/> <input class="swal2-input" required id='password' type='password' value='${password}' placeholder="your password ...">`,
           showCancelButton: true,
           confirmButtonText: signMethod,
           preConfirm: () => ({
@@ -215,18 +245,9 @@ const App = () => {
                   return checkLog;
                 }
                 validLogin().then((validity) => {
-                  // console.log("1 validity user is ", currUser);
                   validity === true
                     ? promptArr[2]("Signed In Successfully!")
                     : promptArr[1]("Incorrect Username/Password!");
-                  // console.log("2 validity user is ", currUser);
-                  // async function waitForDownload() {
-                  //   let download = await downloadUserNominations();
-                  //   return download;
-                  // }
-                  // waitForDownload().then((status) => {
-                  //   console.log(status);
-                  // });
                 });
               }
             }
@@ -254,16 +275,15 @@ const App = () => {
     promptArr.push(credentialsError);
 
     const credentialsSuccess = (success) => {
-      // if (validity === true) {
-      //   console.log("plezaa", validity);
-        swal.fire({
-          icon: "success",
-          title: "Success",
-          text: success,
-          showCancelButton: false,
-        });
+      swal.fire({
+        icon: "success",
+        title: "Success",
+        text: success,
+        showCancelButton: false,
+      });
     };
     promptArr.push(credentialsSuccess);
+
     // to call a function just promptArr[desiredCall](params)
     promptArr[0]();
   };
@@ -279,11 +299,7 @@ const App = () => {
         const data = snapshot.val().users;
         for (let key in data) {
           // when they log in set each users nominations
-          console.log(
-            `currUser: ${currUser} datakeyusernam: ${data[key].username}`
-          );
           if (currUser.toUpperCase() === data[key].username.toUpperCase()) {
-            console.log("yo stuff", data[key].nominations);
             if (data[key].nominations) {
               setUserNominations(data[key].nominations);
               newStuff = userNominations;
@@ -365,7 +381,10 @@ const App = () => {
         />
       )}
       {isSearching === false && isLoggedIn === true && (
-        <UserNominations userNominations={userNominations} />
+        <UserNominations
+          userNominations={userNominations}
+          removeNominee={removeNominee}
+        />
       )}
     </div>
   );

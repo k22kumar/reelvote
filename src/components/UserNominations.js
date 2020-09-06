@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import MovieOption from "./MovieOption.js";
 
 const UserNominations = (props) => {
-    const { userNominations } = props;
-    console.log("nominees are ", userNominations);
+    const { userNominations, removeNominee } = props;
     return (
         <div>
             <h2>Your Nominations</h2>
@@ -11,7 +10,16 @@ const UserNominations = (props) => {
             {userNominations.length > 0 && (<ul>
                 {userNominations.map((nominee, index) => {
                     const { poster, title, year, id } = nominee;
-                    return <MovieOption key={index} poster={poster} title={title} id={id} year={year}/>
+                    return (
+                      <MovieOption
+                        key={index}
+                        poster={poster}
+                        title={title}
+                        id={id}
+                        year={year}
+                        removeNominee={removeNominee}
+                      />
+                    );
                     })}
             </ul>)}
         </div>

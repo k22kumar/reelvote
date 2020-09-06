@@ -8,7 +8,7 @@ const MovieOption = (props) => {
     id,
     handleSignInAndRegister,
     addNomination,
-    isLoggedIn,
+    isLoggedIn
   } = props;
 
   const handleNominate = () => {
@@ -40,8 +40,9 @@ const MovieOption = (props) => {
       <li>
         <button
           onClick={
-            isLoggedIn === true
-              ? handleNominate
+            // Is user loggedin? if not ask to sign in, if they are check if the remove func was passed meaning it is an option on the nomination page if not then keep handle func
+            isLoggedIn === true ? 
+            ( props.removeNominee ? () => {props.removeNominee(nominee)} : handleNominate )
               : handleSignInAndRegister
           }
         >

@@ -9,7 +9,6 @@ const SearchResults = (props) => {
     isLoggedIn,
     addNomination,
   } = props;
-  console.log(results);
   return (
     <div>
       <h2>{searchMessage}</h2>
