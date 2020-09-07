@@ -238,11 +238,11 @@ html {
 html {
   background-color: #FBF7ED;
   font-size: 62.5%;
+  font-family: 'Open Sans', sans-serif;
 }
 
 nav {
   background-color: #EFFCFA;
-  height: 80px;
 }
 
 body, html {
@@ -256,13 +256,17 @@ ul {
 }
 
 h1, h2, h3, p {
+  text-align: center;
   padding: 0;
   margin: 0;
+  font-family: 'Open Sans', sans-serif;
 }
 
 h1 {
-  width: 255px;
+  font-size: 4rem;
   text-align: center;
+  margin: 10px 0;
+  font-family: 'Playfair Display SC', serif;
 }
 
 h2 {
@@ -271,6 +275,7 @@ h2 {
 
 p {
   line-height: 1.5;
+  font-size: 1.6rem;
 }
 
 img {
@@ -292,6 +297,7 @@ button {
   background-color: #008060;
   color: white;
   padding: 10px 12px;
+  font-size: 1.6rem;
   -webkit-transition: all 0.1s ease;
   transition: all 0.1s ease;
   cursor: pointer;
@@ -344,18 +350,24 @@ button:hover {
   -webkit-box-pack: space-evenly;
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
+  padding-bottom: 30px;
 }
 
-.toggleSearch, .account, .searchContainer input {
-  height: 35px;
+.navigation p {
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
-.toggleSearch {
-  width: 35px;
+.toggleSearch, .account, .searchContainer input, .searchButton, .movieSearch {
+  height: 40px;
+}
+
+.toggleSearch, .searchButton {
+  width: 40px;
 }
 
 .searchContainer input {
-  width: 221px;
+  width: 200px;
   font-size: 2rem;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -366,9 +378,15 @@ button:hover {
 .searchButton {
   background-color: #95BF47;
   border-radius: 0;
-  height: 40px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+.menuOptions {
+  width: 100%;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
 }
 
 .topNominations {
@@ -384,6 +402,7 @@ button:hover {
 .topContainer {
   width: 100%;
   height: 100%;
+  background-color: #95BF47;
 }
 
 .topContainer ul {
@@ -394,13 +413,11 @@ button:hover {
 .imgLI {
   width: 40%;
   height: 100%;
-  background-color: #95BF47;
 }
 
 .topImgContainer {
   width: 50%;
-  height: 100%;
-  max-height: 100%;
+  min-width: 115px;
   border-radius: 18px;
   overflow: hidden;
 }
@@ -413,8 +430,22 @@ button:hover {
 .topDetails {
   height: 100%;
   color: white;
-  background-color: #95BF47;
   width: 60%;
+}
+
+.detailCard {
+  background-color: #EFFCFA;
+  color: black;
+  border-radius: 18px;
+  padding: 10px;
+}
+
+.detailCard p {
+  font-size: 3rem;
+}
+
+.detailCard i {
+  margin-right: 10px;
 }
 
 .movieOption {
@@ -426,11 +457,18 @@ button:hover {
 }
 
 .movieDetails {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  padding: 20px 5px;
   text-align: center;
 }
 
 .movieDetails h3, .movieDetails p {
   font-size: 1.3rem;
+  color: white;
 }
 
 .tally {
@@ -438,11 +476,12 @@ button:hover {
   padding: 0 5px;
   background-color: #0F0507;
   color: white;
+  font-size: 1.5rem;
 }
 
 .tally p {
   margin-left: 5px;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 
 .nominateButton {
@@ -452,5 +491,24 @@ button:hover {
 
 .imgContainer {
   height: 265px;
+  overflow: hidden;
+  position: relative;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+footer {
+  background-color: black;
+  padding: 10px 0;
+}
+
+footer p, footer a {
+  color: white;
+  font-weight: 600;
+}
+
+footer a {
+  margin-left: 5px;
 }
 /*# sourceMappingURL=App.css.map */

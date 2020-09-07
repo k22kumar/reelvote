@@ -15,18 +15,18 @@
         height: 100%;
         width: 100%;
     }
+    background-color: $bgSecondary;
 }
 
 .imgLI{
     width: 40%;
     height: 100%;
-    background-color: $bgSecondary;
 }
 
 .topImgContainer{
     width: 50%;
-    height: 100%;
-    max-height: 100%;
+    min-width: 115px;
+
     border-radius: $bigRadius;
     overflow: hidden;
     img{
@@ -37,6 +37,18 @@
 .topDetails {
     height: 100%;
     color: $fontColourS;
-    background-color: $bgSecondary;
     width: 60%; 
+}
+
+.detailCard {
+    background-color: $navBG;
+    color: black;
+    border-radius: $bigRadius;
+    p {
+        font-size: 3rem;
+    }
+    i {
+        margin-right: 10px;
+    }
+    padding: 10px;
 }
