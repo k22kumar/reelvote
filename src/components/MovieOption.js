@@ -28,7 +28,11 @@ const MovieOption = (props) => {
 
   const handleNominate = () => {
     addNomination(nominee);
-    setIsNominee(true);
+    if(userNominations.length===5){
+      setIsNominee(false);
+    } else {
+      setIsNominee(true);
+    }
   };
 
   const handleRemoveNominee = () => {
@@ -57,10 +61,10 @@ const MovieOption = (props) => {
             <img src={poster} alt={`Poster for: ${title}`} />
           )
         }
-      </li>
-      <li className="movieDetails">
-        <h3>{title}</h3>
-        <p>{year}</p>
+        <div className="movieDetails">
+          <h3>{title}</h3>
+          <p>{year}</p>
+        </div>
       </li>
       {tally > 0 && (
         <li className="flexParent tally">

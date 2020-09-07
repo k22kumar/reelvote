@@ -3,7 +3,6 @@ import React, { useState } from "react";
 const Navigation = (props) => {
   const {
     handleSearch,
-    closeSearch,
     handleSignInAndRegister,
     isLoggedIn,
   } = props;
@@ -19,48 +18,35 @@ const Navigation = (props) => {
     setQuery(e.target.value);
   };
 
-  const handleCloseSearch = () => {
-    toggleSearch();
-    closeSearch();
-  };
-
   const defferedSearch = (e) => {
     handleSearch(e, query);
   };
 
   return (
-    <nav className="flexParent navigation">
-      <button className="account" onClick={handleSignInAndRegister}>
-        {isLoggedIn === false ? "Sign In/Up" : "Sign Out"}
-      </button>
-      {!userSearching && <h1>Shoppies</h1>}
-      {userSearching && (
+    <nav className=" flexParent flexColumn navigation">
+      <h1>The Shoppies</h1>
+      <p>Nominate your 5 all time favourite movies!</p>
+      <div className="flexParent menuOptions">
         <div className="flexParent searchContainer">
           <form className="flexParent" action="" onSubmit={defferedSearch}>
             <label htmlFor="movieSearch"></label>
             <input
               id="movieSearch"
+              className="movieSearch"
               type="search"
               required
               placeholder="Search movies"
               onChange={handleInput}
             />
-            <button class="searchButton" type="submit">
+            <button className="searchButton" type="submit">
               <i className="fas fa-search"></i>
             </button>
           </form>
         </div>
-      )}
-      {userSearching && (
-        <button className="toggleSearch" onClick={handleCloseSearch}>
-          <i className="fas fa-times"></i>
+        <button className="account" onClick={handleSignInAndRegister}>
+          {isLoggedIn === false ? "Sign In/Up" : "Sign Out"}
         </button>
-      )}
-      {!userSearching && (
-        <button className="toggleSearch" onClick={toggleSearch}>
-          <i className="fas fa-search"></i>
-        </button>
-      )}
+      </div>
     </nav>
   );
 };

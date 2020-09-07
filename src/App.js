@@ -6,6 +6,8 @@ import SearchResults from "./components/SearchResults";
 import MovieOption from "./components/MovieOption";
 import UserNominations from "./components/UserNominations";
 import TopNominations from "./components/TopNominations"
+import Banner from "./components/Banner";
+import Footer from "./components/Footer";
 import firebase from "./components/Firebase";
 import swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -71,6 +73,15 @@ const App = () => {
     });
   }, []);
 
+  // useEffect(() => {
+  //   async function checkFive() {
+  //       let check = await checkNominations();
+  //       return check;
+  //   }
+  //   checkFive().then(()=> {});
+      
+  // }, [userNominations])
+
   // hook to update users page when loggedin
   useEffect(() => {
     async function waitForDownload() {
@@ -109,10 +120,28 @@ const App = () => {
     setIsSearching(false);
     setSearchMessage("");
   };
+  
+  const checkNominations = (action) => {
+    // this is my hacky solution to make it work
+    if (action === "add"){
+    if (userNominations.length >= 4) {
+      setFiveNominees(true);
+    } else {
+      setFiveNominees(false);
+    }
+    } else {
+    if (userNominations.length > 4) {
+      setFiveNominees(false);
+    } else {
+      setFiveNominees(true);
+    }
+    }
+  }
 
   const addNomination = (nominee) => {
     const dbRef = firebase.database().ref();
     let userKey = "";
+    checkNominations("add");
     dbRef.once("value", (snapshot) => {
       const data = snapshot.val().users;
       // if not full nominations
@@ -128,17 +157,18 @@ const App = () => {
           scrollbarPadding: false,
           icon: "error",
           title: "Oops...",
-          text: "You cant nominate more than 5 times!",
-          showCancelButton: true,
-          cancelButtonText: "Back",
+          text: "You cant nominate more than 5 times! Please remove a nomination.",
         });
       }
     });
-    const newNominations = userNominations;
-    newNominations.push(nominee);
-    const userRef = dbRef.child("users").child(userKey);
-    userRef.update({ nominations: newNominations });
-    updateAllNominations(nominee, "add");
+    if(userKey!==""){
+      const newNominations = userNominations;
+      newNominations.push(nominee);
+      const userRef = dbRef.child("users").child(userKey);
+      userRef.update({ nominations: newNominations });
+      updateAllNominations(nominee, "add");
+    }
+    
   };
 
   const removeNominee = (nominee) => {
@@ -160,6 +190,7 @@ const App = () => {
     const userRef = dbRef.child("users").child(userKey);
     userRef.update({ nominations: newNominations });
     updateAllNominations(nominee, "remove");
+    checkNominations("REMOVING");
   };
 
   // function to update the tallies on all nominations from all users
@@ -370,6 +401,7 @@ const App = () => {
           ) {
             setCurrUser(username);
             setIsLoggedIn(true);
+            checkNominations();
             correctSignIn = true;
           }
         }
@@ -399,9 +431,11 @@ const App = () => {
           addNomination={addNomination}
           isLoggedIn={isLoggedIn}
           userNominations={userNominations}
+          closeSearch={closeSearch}
           removeNominee={removeNominee}
         />
       )}
+      {fiveNominees === true && <Banner />}
       {isSearching === false && isLoggedIn === true && (
         <UserNominations
           userNominations={userNominations}
@@ -409,7 +443,7 @@ const App = () => {
         />
       )}
       {isSearching === false && (
-        <section className="publicNominations">
+        <section className="wrappper publicNominations">
           <h2>Public Nominations</h2>
           <div className="flexParent publicList">
             {publicNominations.map((nomObj, index) => {
@@ -439,6 +473,7 @@ const App = () => {
           </div>
         </section>
       )}
+      <Footer />
     </div>
   );
 };

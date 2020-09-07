@@ -10,30 +10,46 @@ const SearchResults = (props) => {
     addNomination,
     removeNominee,
     userNominations,
+    closeSearch,
   } = props;
+
+    const handleCloseSearch = () => {
+      closeSearch();
+    };
+
   return (
-    <div>
+    <section className="wrapper">
       <h2>{searchMessage}</h2>
+      <div className="flexParent closeContainer">
+        <p>Tap "X" to close! </p>
+        <button className="toggleSearch" onClick={handleCloseSearch}>
+          <i className="fas fa-times"></i>
+        </button>
+      </div>
       {results.length > 0 &&
-        results.map((movie, index) => {
+      <ul className="flexParent flexWrap"> {results.map((movie, index) => {
           const { Poster, Title, Year, imdbID } = movie;
           return (
-            <MovieOption
-              key={index}
-              id={imdbID}
-              title={Title}
-              poster={Poster}
-              year={Year}
-              handleSignInAndRegister={handleSignInAndRegister}
-              isLoggedIn={isLoggedIn}
-              addNomination={addNomination}
-              removeNominee={removeNominee}
-              userNominations={userNominations}
-              tally={0}
-            />
+            <li>
+              <MovieOption
+                key={index}
+                id={imdbID}
+                title={Title}
+                poster={Poster}
+                year={Year}
+                handleSignInAndRegister={handleSignInAndRegister}
+                isLoggedIn={isLoggedIn}
+                addNomination={addNomination}
+                removeNominee={removeNominee}
+                userNominations={userNominations}
+                tally={0}
+              />
+            </li>
           );
         })}
-    </div>
+      </ul>
+        }
+    </section>
   );
 };
 

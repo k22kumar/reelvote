@@ -1,18 +1,23 @@
 .navigation {
     justify-content: space-evenly;
+    padding-bottom: 30px;
+    p{
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
 }
 
-.toggleSearch, .account, .searchContainer input {
-    height: 35px;
+.toggleSearch, .account, .searchContainer input, .searchButton , .movieSearch{
+    height: 40px;
 }
 
-.toggleSearch {
-    width: 35px;
+.toggleSearch, .searchButton {
+    width: 40px;
 }
 
 .searchContainer{
     input {
-        width: 221px;
+        width: 200px;
         font-size: 2rem;
         border-top-left-radius: 20px;
         border-bottom-left-radius: 20px;
@@ -24,8 +29,11 @@
 .searchButton {
         background-color:$bgSecondary;
         border-radius: 0;
-        height: 40px;
         border-top-right-radius: 20px;
         border-bottom-right-radius: 20px;
-        
     }
+    
+.menuOptions{
+    width: 100%;
+    justify-content: space-evenly;
+}

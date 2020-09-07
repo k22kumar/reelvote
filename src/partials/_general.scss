@@ -1,11 +1,11 @@
 html {
     background-color: $bgPrimary;
     font-size: 62.5%;
+    font-family: 'Open Sans', sans-serif;
 }
 
 nav{
     background-color: $navBG;
-    height: 80px;
 }
 
 body, html{
@@ -19,13 +19,17 @@ ul {
 }
 
 h1,h2,h3,p {
+    text-align: center;
     padding: 0;
     margin: 0;
+    font-family: 'Open Sans', sans-serif;
 }
 
 h1 {
-    width: 255px;
+    font-size: 4rem;
     text-align: center;
+    margin: 10px 0;
+    font-family: 'Playfair Display SC', serif;
 }
 
 h2 {
@@ -34,6 +38,7 @@ h2 {
 
 p {
     line-height: 1.5;
+    font-size: 1.6rem;
 }
 
 img {
@@ -55,6 +60,7 @@ button {
     background-color: $buttonPrimary;
     color: $fontColourS;
     padding: 10px 12px;
+    font-size: 1.6rem;
     transition: all 0.1s ease;
     cursor: pointer;
     &:hover {

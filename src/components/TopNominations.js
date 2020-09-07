@@ -7,8 +7,6 @@ import { Carousel } from "react-responsive-carousel";
 const TopNominations = (props) => {
 
     const {publicNominations} = props;
-    console.log("sup", publicNominations);
-    console.log("no", publicNominations[0]);
 
     return (
       <section className="topNominations">
@@ -21,7 +19,7 @@ const TopNominations = (props) => {
           showStatus={false}
         >
           {publicNominations.slice(0, 3).map((nomObj, index) => {
-              const {title, id, poster, tally} = nomObj;
+              const {title, poster, tally} = nomObj;
               return (
                 <div className="flexParent topContainer">
                   <ul className="flexParent">
@@ -37,9 +35,15 @@ const TopNominations = (props) => {
                         )}
                       </div>
                     </li>
-                    <li className="topDetails">
-                      <p>{tally}</p>
-                      <p>{title}</p>
+                    <li className="topDetails flexParent">
+                      <div className="detailCard">
+                      <p>#{index+1}</p>
+                        <p>
+                          <i className="fas fa-award"></i> 
+                          {tally}
+                        </p>
+                        <p>{title}</p>
+                      </div>
                     </li>
                   </ul>
                 </div>
