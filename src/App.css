@@ -389,6 +389,14 @@ button:hover {
           justify-content: space-evenly;
 }
 
+.closeContainer {
+  margin: 10px 0;
+}
+
+.closeContainer p {
+  margin-right: 20px;
+}
+
 .topNominations {
   margin-bottom: 20px;
   height: 25vw;
