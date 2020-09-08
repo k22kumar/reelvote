@@ -40,7 +40,7 @@ const TopNominations = (props) => {
                       <i className="fas fa-award"></i>
                       {tally}
                     </p>
-                    <p>{title}</p>
+                    <p className="topTitle">{title}</p>
                   </div>
                 </li>
               </ul>

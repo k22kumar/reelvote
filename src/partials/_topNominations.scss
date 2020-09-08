@@ -13,13 +13,14 @@
     height: 100%;
     ul{
         height: 100%;
-        width: 100%;
+        width: 50%;
+        min-width: 320px;
     }
     background-color: $bgSecondary;
 }
 
 .imgLI{
-    width: 40%;
+    width: 50%;
     height: 100%;
 }
 
@@ -37,7 +38,10 @@
 .topDetails {
     height: 100%;
     color: $fontColourS;
-    width: 60%; 
+    width: 50%; 
+    .topTitle {
+        font-size: 2rem;
+    }
 }
 
 .detailCard {
@@ -50,5 +54,5 @@
     i {
         margin-right: 10px;
     }
-    padding: 10px;
+    padding: 15px;
 }

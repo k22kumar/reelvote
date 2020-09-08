@@ -414,11 +414,12 @@ button:hover {
 
 .topContainer ul {
   height: 100%;
-  width: 100%;
+  width: 50%;
+  min-width: 320px;
 }
 
 .imgLI {
-  width: 40%;
+  width: 50%;
   height: 100%;
 }
 
@@ -437,14 +438,18 @@ button:hover {
 .topDetails {
   height: 100%;
   color: white;
-  width: 60%;
+  width: 50%;
+}
+
+.topDetails .topTitle {
+  font-size: 2rem;
 }
 
 .detailCard {
   background-color: #EFFCFA;
   color: black;
   border-radius: 18px;
-  padding: 10px;
+  padding: 15px;
 }
 
 .detailCard p {
@@ -521,5 +526,26 @@ footer p, footer a {
 
 footer a {
   margin-left: 5px;
+}
+
+@media (max-width: 800px) {
+  h1 {
+    font-size: 3rem;
+  }
+  .wrapper {
+    width: 90%;
+  }
+  .detailCard {
+    padding: 10px;
+  }
+  .detailCard p {
+    font-size: 1.5rem;
+  }
+  .detailCard i {
+    margin-right: 10px;
+  }
+  .topDetails .topTitle {
+    font-size: 1.4rem;
+  }
 }
 /*# sourceMappingURL=App.css.map */
