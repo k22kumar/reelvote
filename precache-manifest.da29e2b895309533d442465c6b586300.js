@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fd9714a6ab18334bd9148302ea8e2961",
+    "revision": "8a7ad10ded2163d14a6a4c1de9ec1b92",
     "url": "/shoppies/index.html"
   },
   {
-    "revision": "ecfc011a6cca732db6cb",
+    "revision": "d858621f48da877435a8",
     "url": "/shoppies/static/css/2.fb346933.chunk.css"
   },
   {
-    "revision": "0b3a07ec2d98cd8536c4",
-    "url": "/shoppies/static/css/main.7990d8b2.chunk.css"
+    "revision": "16a9fba1a4e6b42bd964",
+    "url": "/shoppies/static/css/main.4a18af90.chunk.css"
   },
   {
-    "revision": "ecfc011a6cca732db6cb",
-    "url": "/shoppies/static/js/2.e3c0930f.chunk.js"
+    "revision": "d858621f48da877435a8",
+    "url": "/shoppies/static/js/2.fc10ff4c.chunk.js"
   },
   {
     "revision": "be48727424509191744560c94f17de24",
-    "url": "/shoppies/static/js/2.e3c0930f.chunk.js.LICENSE.txt"
+    "url": "/shoppies/static/js/2.fc10ff4c.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "0b3a07ec2d98cd8536c4",
-    "url": "/shoppies/static/js/main.22e99732.chunk.js"
+    "revision": "16a9fba1a4e6b42bd964",
+    "url": "/shoppies/static/js/main.38ef2f5d.chunk.js"
   },
   {
     "revision": "27778a2488007f8c9380",
