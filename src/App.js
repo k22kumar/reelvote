@@ -29,6 +29,11 @@ const App = () => {
   // boolean to check if user has 5 nominees assume not full
   const [fiveNominees, setFiveNominees] = useState(false);
 
+  // sweet alert defaults
+  const swalShopify = swal.mixin({
+    confirmButtonColor: "#004C3F",
+  });
+
   // functions
 
   // function to run when component mounts (ie gather user data and new nominations)
@@ -138,7 +143,7 @@ const App = () => {
         }
       });
     } else {
-      swal.fire({
+      swalShopify.fire({
         scrollbarPadding: false,
         icon: "error",
         title: "Oops...",
@@ -216,7 +221,7 @@ const App = () => {
       // reloads page if user wants to signout
       window.location.reload(true);
     } else {
-      swal
+      swalShopify
         .fire({
           scrollbarPadding: false,
           title: `Sign In or Register`,
@@ -227,7 +232,7 @@ const App = () => {
         .then((result) => {
           if (result.value) {
             credentialsPrompt("Sign In");
-          } else if (result.dismiss === swal.DismissReason.cancel) {
+          } else if (result.dismiss === swalShopify.DismissReason.cancel) {
             credentialsPrompt("Register");
           }
         });
@@ -239,7 +244,7 @@ const App = () => {
     let username = "";
     let password = "";
     const credentials = () => {
-      swal
+      swalShopify
         .fire({
           scrollbarPadding: false,
           title: signMethod,
@@ -281,14 +286,14 @@ const App = () => {
                 });
               }
             }
-          } else if (result.dismiss === swal.DismissReason.cancel) {
+          } else if (result.dismiss === swalShopify.DismissReason.cancel) {
           }
         });
     };
     promptArr.push(credentials);
 
     const credentialsError = (error) => {
-      swal
+      swalShopify
         .fire({
           scrollbarPadding: false,
           icon: "error",
@@ -298,7 +303,7 @@ const App = () => {
           cancelButtonText: "Back",
         })
         .then((result) => {
-          if (result.dismiss === swal.DismissReason.cancel) {
+          if (result.dismiss === swalShopify.DismissReason.cancel) {
             promptArr[0]();
           }
         });
@@ -306,7 +311,7 @@ const App = () => {
     promptArr.push(credentialsError);
 
     const credentialsSuccess = (success) => {
-      swal.fire({
+      swalShopify.fire({
         scrollbarPadding: false,
         icon: "success",
         title: "Success",
@@ -430,7 +435,7 @@ const App = () => {
         />
       )}
       {isSearching === false && (
-        <section className="wrappper publicNominations">
+        <section className="wrapper publicNominations">
           <h2>Public Nominations</h2>
           <div className="flexParent publicList">
             {publicNominations.map((nomObj, index) => {

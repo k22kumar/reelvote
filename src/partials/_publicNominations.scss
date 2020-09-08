@@ -1,7 +1,15 @@
 .publicNominations {
+    margin-top: 20px;
     text-align: center;
 }
 
 .publicList {
     flex-wrap: wrap;
+}
+
+.userNominations{
+    margin-top: 20px;
+    h2 {
+        margin: 10px 0;
+    }
 }
