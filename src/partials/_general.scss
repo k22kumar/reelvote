@@ -45,10 +45,6 @@ img {
     display: block;
 }
 
-a {
-    text-decoration: none;
-}
-
 label {
     font-size: 1.7rem;
     }
@@ -62,7 +58,7 @@ button {
     font-size: 1.6rem;
     transition: all 0.1s ease;
     cursor: pointer;
-    &:hover {
+    &:hover, &:focus {
         background-color: $buttonHover;
     }
 }
@@ -95,5 +91,12 @@ button {
 .flexWrap {
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
+}
+
+.banner {
+    padding: 20px 0;
+    background-color: $buttonHover;
+    color: white;
+    margin-bottom: 20px 0;
 }
 

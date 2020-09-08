@@ -8,7 +8,7 @@ const UserNominations = (props) => {
     setTheNominations(userNominations);
   }, [userNominations]);
   return (
-    <div className="wrapper">
+    <div className="wrapper userNominations">
       <h2>Your Nominations</h2>
       {theNominations.length === 0 && (
         <p>You havent picked any nominees yet!</p>
