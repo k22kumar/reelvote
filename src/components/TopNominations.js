@@ -16,7 +16,7 @@ const TopNominations = (props) => {
         dynamicHeight={false}
         showStatus={false}
       >
-        {publicNominations.slice(0, 3).map((nomObj, index) => {
+        {publicNominations.slice(0, 5).map((nomObj, index) => {
           const { title, poster, tally } = nomObj;
           return (
             <div className="flexParent topContainer">
