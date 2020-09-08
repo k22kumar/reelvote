@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 
 const Navigation = (props) => {
-  const {
-    handleSearch,
-    handleSignInAndRegister,
-    isLoggedIn,
-  } = props;
+  const { handleSearch, handleSignInAndRegister, isLoggedIn } = props;
   // checks for when user clicks to search
   const [userSearching, setUserSearching] = useState(false);
   const [query, setQuery] = useState("");
