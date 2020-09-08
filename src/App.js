@@ -5,7 +5,7 @@ import Navigation from "./components/Navigation";
 import SearchResults from "./components/SearchResults";
 import MovieOption from "./components/MovieOption";
 import UserNominations from "./components/UserNominations";
-import TopNominations from "./components/TopNominations"
+import TopNominations from "./components/TopNominations";
 import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 import firebase from "./components/Firebase";
@@ -73,15 +73,6 @@ const App = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   async function checkFive() {
-  //       let check = await checkNominations();
-  //       return check;
-  //   }
-  //   checkFive().then(()=> {});
-      
-  // }, [userNominations])
-
   // hook to update users page when loggedin
   useEffect(() => {
     async function waitForDownload() {
@@ -120,55 +111,48 @@ const App = () => {
     setIsSearching(false);
     setSearchMessage("");
   };
-  
-  const checkNominations = (action) => {
+
+  const checkNominations = () => {
     // this is my hacky solution to make it work
-    if (action === "add"){
     if (userNominations.length >= 4) {
       setFiveNominees(true);
     } else {
       setFiveNominees(false);
     }
-    } else {
-    if (userNominations.length > 4) {
-      setFiveNominees(false);
-    } else {
-      setFiveNominees(true);
-    }
-    }
-  }
+  };
 
   const addNomination = (nominee) => {
     const dbRef = firebase.database().ref();
     let userKey = "";
-    checkNominations("add");
-    dbRef.once("value", (snapshot) => {
-      const data = snapshot.val().users;
-      // if not full nominations
-      if (fiveNominees === false) {
+    checkNominations();
+
+    // if not full nominations
+    if (fiveNominees === false) {
+      dbRef.once("value", (snapshot) => {
+        const data = snapshot.val().users;
         for (let key in data) {
           if (currUser.toUpperCase() === data[key].username.toUpperCase()) {
             userKey = key;
             break;
           }
         }
-      } else {
-        swal.fire({
-          scrollbarPadding: false,
-          icon: "error",
-          title: "Oops...",
-          text: "You cant nominate more than 5 times! Please remove a nomination.",
-        });
-      }
-    });
-    if(userKey!==""){
+      });
+    } else {
+      swal.fire({
+        scrollbarPadding: false,
+        icon: "error",
+        title: "Oops...",
+        text:
+          "You cant nominate more than 5 times! Please remove a nomination.",
+      });
+    }
+    if (userKey !== "") {
       const newNominations = userNominations;
       newNominations.push(nominee);
       const userRef = dbRef.child("users").child(userKey);
       userRef.update({ nominations: newNominations });
       updateAllNominations(nominee, "add");
     }
-    
   };
 
   const removeNominee = (nominee) => {
@@ -183,14 +167,16 @@ const App = () => {
         }
       }
     });
+
     const newNominations = userNominations.filter((nomObj) => {
       return nomObj.id !== nominee.id;
     });
+
     setUserNominations(newNominations);
     const userRef = dbRef.child("users").child(userKey);
     userRef.update({ nominations: newNominations });
     updateAllNominations(nominee, "remove");
-    checkNominations("REMOVING");
+    setFiveNominees(false);
   };
 
   // function to update the tallies on all nominations from all users
@@ -227,6 +213,7 @@ const App = () => {
 
   const handleSignInAndRegister = () => {
     if (isLoggedIn === true) {
+      // reloads page if user wants to signout
       window.location.reload(true);
     } else {
       swal

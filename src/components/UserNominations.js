@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MovieOption from "./MovieOption.js";
 
 const UserNominations = (props) => {
   const { userNominations, removeNominee } = props;
+  const [theNominations, setTheNominations] = useState(userNominations);
+  useEffect(() => {
+    setTheNominations(userNominations);
+  }, [userNominations]);
   return (
     <div className="wrapper">
       <h2>Your Nominations</h2>
-      {userNominations.length === 0 && (
+      {theNominations.length === 0 && (
         <p>You havent picked any nominees yet!</p>
       )}
-      {userNominations.length > 0 && (
+      {theNominations.length > 0 && (
         <ul className="flexParent flexWrap">
-          {userNominations.map((nominee, index) => {
+          {theNominations.map((nominee, index) => {
             const { poster, title, year, id } = nominee;
             return (
               <li>
@@ -22,7 +26,7 @@ const UserNominations = (props) => {
                   id={id}
                   year={year}
                   removeNominee={removeNominee}
-                  userNominations={userNominations}
+                  userNominations={theNominations}
                   tally={0}
                 />
               </li>

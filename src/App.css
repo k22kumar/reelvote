@@ -279,7 +279,6 @@ p {
 }
 
 img {
-  max-width: 100%;
   display: block;
 }
 
@@ -504,6 +503,10 @@ button:hover {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
+}
+
+.imgContainer img {
+  max-width: 100%;
 }
 
 footer {
