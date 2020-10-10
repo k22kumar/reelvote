@@ -20,7 +20,7 @@ const Navigation = (props) => {
 
   return (
     <nav className=" flexParent flexColumn navigation">
-      <h1>The Shoppies</h1>
+      <h1>Reel Vote</h1>
       <p>Nominate your 5 all time favourite movies!</p>
       <div className="flexParent menuOptions">
         <div className="flexParent searchContainer">
