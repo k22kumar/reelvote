@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/shoppies/static/css/main.782b398e.chunk.css",
-    "main.js": "/shoppies/static/js/main.4528df32.chunk.js",
-    "main.js.map": "/shoppies/static/js/main.4528df32.chunk.js.map",
-    "runtime-main.js": "/shoppies/static/js/runtime-main.da667ea0.js",
-    "runtime-main.js.map": "/shoppies/static/js/runtime-main.da667ea0.js.map",
-    "static/css/2.fb346933.chunk.css": "/shoppies/static/css/2.fb346933.chunk.css",
-    "static/js/2.a10e2afe.chunk.js": "/shoppies/static/js/2.a10e2afe.chunk.js",
-    "static/js/2.a10e2afe.chunk.js.map": "/shoppies/static/js/2.a10e2afe.chunk.js.map",
-    "index.html": "/shoppies/index.html",
-    "precache-manifest.86280f3d267823801f5d9d5284c8e786.js": "/shoppies/precache-manifest.86280f3d267823801f5d9d5284c8e786.js",
-    "service-worker.js": "/shoppies/service-worker.js",
-    "static/css/2.fb346933.chunk.css.map": "/shoppies/static/css/2.fb346933.chunk.css.map",
-    "static/css/main.782b398e.chunk.css.map": "/shoppies/static/css/main.782b398e.chunk.css.map",
-    "static/js/2.a10e2afe.chunk.js.LICENSE.txt": "/shoppies/static/js/2.a10e2afe.chunk.js.LICENSE.txt",
-    "static/media/noImageAvailable.jpg": "/shoppies/static/media/noImageAvailable.625d1aff.jpg"
+    "main.css": "/reelvote/static/css/main.782b398e.chunk.css",
+    "main.js": "/reelvote/static/js/main.28545447.chunk.js",
+    "main.js.map": "/reelvote/static/js/main.28545447.chunk.js.map",
+    "runtime-main.js": "/reelvote/static/js/runtime-main.13ac61f0.js",
+    "runtime-main.js.map": "/reelvote/static/js/runtime-main.13ac61f0.js.map",
+    "static/css/2.fb346933.chunk.css": "/reelvote/static/css/2.fb346933.chunk.css",
+    "static/js/2.c4483b4e.chunk.js": "/reelvote/static/js/2.c4483b4e.chunk.js",
+    "static/js/2.c4483b4e.chunk.js.map": "/reelvote/static/js/2.c4483b4e.chunk.js.map",
+    "index.html": "/reelvote/index.html",
+    "precache-manifest.785a28bf4e76b4c13b4ea91517f2ca5c.js": "/reelvote/precache-manifest.785a28bf4e76b4c13b4ea91517f2ca5c.js",
+    "service-worker.js": "/reelvote/service-worker.js",
+    "static/css/2.fb346933.chunk.css.map": "/reelvote/static/css/2.fb346933.chunk.css.map",
+    "static/css/main.782b398e.chunk.css.map": "/reelvote/static/css/main.782b398e.chunk.css.map",
+    "static/js/2.c4483b4e.chunk.js.LICENSE.txt": "/reelvote/static/js/2.c4483b4e.chunk.js.LICENSE.txt",
+    "static/media/noImageAvailable.jpg": "/reelvote/static/media/noImageAvailable.625d1aff.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.da667ea0.js",
+    "static/js/runtime-main.13ac61f0.js",
     "static/css/2.fb346933.chunk.css",
-    "static/js/2.a10e2afe.chunk.js",
+    "static/js/2.c4483b4e.chunk.js",
     "static/css/main.782b398e.chunk.css",
-    "static/js/main.4528df32.chunk.js"
+    "static/js/main.28545447.chunk.js"
   ]
 }
